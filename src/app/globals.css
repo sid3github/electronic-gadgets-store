@@ -1,26 +1,456 @@
 @import "tailwindcss";
 
+/* ============================================================
+   EGS — Orange / White / Black
+   White paper · deep ink · vivid orange brand · per-category
+   warm tints in the orange family.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --paper: #ffffff;            /* pure white */
+  --paper-tint: #f6f2eb;       /* warm off-white for soft sections */
+  --paper-warm: #faf6ee;
+  --card: #ffffff;
+  --card-soft: #faf8f3;
+
+  /* Ink — pure greyscale toward black */
+  --ink: #0a0a0a;              /* near-black for text */
+  --ink-2: #1f1f1f;
+  --ink-3: #525252;
+  --ink-4: #828282;
+  --ink-5: #b8b8b8;
+  --line: rgba(10, 10, 10, 0.10);
+  --line-strong: rgba(10, 10, 10, 0.22);
+
+  /* Brand orange — single accent, three intensities. Slightly deeper
+     than pure neon for a more grounded, premium feel (Hermès-leaning). */
+  --orange: #e85a1f;            /* primary brand */
+  --orange-deep: #b8410e;       /* hover / deals / contrast on white */
+  --orange-mid: #ff8a3d;        /* highlight / energy */
+  --orange-soft: #fff1e6;       /* tint background */
+  --orange-pale: #ffe0c8;
+
+  /* Semantic aliases — keep old token names for component compat */
+  --volt-lime: var(--orange-mid);
+  --volt-lime-deep: #ff7a26;
+  --cobalt: var(--orange);
+  --cobalt-deep: var(--orange-deep);
+  --cobalt-soft: var(--orange-soft);
+  --coral: var(--orange-deep);
+  --coral-soft: #ffe0d4;
+  /* Tone aliases — used in USP / About / Contact / Testimonials */
+  --mint: #fff1e6;
+  --sun: #ffc88a;
+  --lavender: #f0e2d0;
+  --peach: #ffd0a8;
+
+  /* Per-category accents — warm orange ramp */
+  --cat-tablets: #fff1e6;       /* lightest peach */
+  --cat-laptops: #ffe0c8;       /* peach */
+  --cat-smartboards: #ffd0a8;   /* mid peach */
+  --cat-kiosks: #ff8a3d;        /* punchy orange */
+  --cat-peripherals: #f8eddf;   /* warm cream */
+
+  /* Semantic */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-border: var(--line);
+
+  /* Radii — editorial sharp aesthetic, no rounded corners */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-pill: 0px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(10, 10, 10, 0.05), 0 1px 1px rgba(10, 10, 10, 0.04);
+  --shadow-md: 0 6px 18px -4px rgba(10, 10, 10, 0.08), 0 2px 4px rgba(10, 10, 10, 0.04);
+  --shadow-lg: 0 24px 50px -16px rgba(10, 10, 10, 0.16), 0 4px 12px rgba(10, 10, 10, 0.06);
+  --shadow-pop: 0 24px 60px -20px rgba(255, 90, 31, 0.30);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-paper: var(--paper);
+  --color-paper-tint: var(--paper-tint);
+  --color-paper-warm: var(--paper-warm);
+  --color-card: var(--card);
+  --color-card-soft: var(--card-soft);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+  --color-ink-5: var(--ink-5);
+  --color-volt-lime: var(--volt-lime);
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-soft: var(--cobalt-soft);
+  --color-coral: var(--coral);
+  --color-coral-soft: var(--coral-soft);
+  --color-mint: var(--mint);
+  --color-sun: var(--sun);
+  --color-lavender: var(--lavender);
+  --color-peach: var(--peach);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  border-color: var(--line);
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--volt-lime);
+  color: var(--ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink-4);
+  border: 3px solid var(--paper);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Display typography helpers
+   ============================================================ */
+
+@utility display-1 {
+  font-size: clamp(2.75rem, 6vw + 1rem, 5.75rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+@utility display-2 {
+  font-size: clamp(2rem, 4vw + 1rem, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+@utility display-3 {
+  font-size: clamp(1.625rem, 2vw + 1rem, 2.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+@utility eyebrow {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+@utility font-display {
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   Surface helpers
+   ============================================================ */
+
+@utility surface-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+
+@utility surface-soft {
+  background: var(--paper-warm);
+  border: 1px solid var(--line);
+}
+
+@utility ink-card {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+}
+
+/* Gradient text helpers */
+@utility text-grad-volt {
+  background: linear-gradient(90deg, var(--ink) 0%, var(--orange) 60%, var(--orange-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* underline accent — bright orange highlight under key words */
+@utility highlight-lime {
+  background: linear-gradient(180deg, transparent 60%, var(--orange-mid) 60%);
+  padding: 0 2px;
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pop-in {
+  0% { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes float-tilt {
+  0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+  50% { transform: translateY(-12px) rotateX(2deg) rotateY(-2deg); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-ticker { animation: ticker-scroll 36s linear infinite; }
+.animate-float { animation: float-y 6s ease-in-out infinite; }
+.animate-float-tilt { animation: float-tilt 7s ease-in-out infinite; }
+.animate-blink { animation: blink 1.4s ease-in-out infinite; }
+.animate-pop { animation: pop-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.4) both; }
+.animate-spin-slow { animation: spin-slow 18s linear infinite; }
+
+/* 3D perspective wrapper for product art */
+.product-3d {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+.product-3d-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.28s ease-out;
+}
+.product-3d:hover .product-3d-inner {
+  transform: rotateY(-2deg) rotateX(1.5deg) translateZ(3px);
+}
+
+/* ============================================================
+   Tilt3D — mouse-tracked perspective tilt with shine
+   ============================================================ */
+
+.tilt-3d {
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  position: relative;
+  isolation: isolate;
+}
+.tilt-3d-inner {
+  position: relative;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--tilt-scale, 1));
+  transition: transform 0.28s ease-out;
+  will-change: transform;
+}
+.tilt-3d:hover .tilt-3d-inner {
+  transition: transform 0.16s ease-out;
+}
+.tilt-3d-parallax {
+  transform-style: preserve-3d;
+}
+.tilt-3d-parallax > * {
+  transform: translateZ(0);
+}
+
+/* Layered depth helpers — keep product hover feedback restrained.
+   Large Z movement can distract scanning users and conflicts with
+   reduced-motion accessibility guidance when it becomes the main cue. */
+.depth-near { transform: translateZ(10px); }
+.depth-mid  { transform: translateZ(4px); }
+.depth-back { transform: translateZ(0px); }
+.depth-far  { transform: translateZ(-2px); }
+
+/* Cursor-following shine */
+.tilt-3d-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle 320px at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  mix-blend-mode: overlay;
+  z-index: 5;
+}
+.tilt-3d:hover .tilt-3d-shine { opacity: 1; }
+
+/* WCAG 2.3.3 — honor reduced-motion preference. Vestibular-disorder
+   guidance specifically calls out parallax/tilt on hover. */
+@media (prefers-reduced-motion: reduce) {
+  .tilt-3d-inner,
+  .tilt-3d:hover .tilt-3d-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+  .tilt-3d-shine,
+  .tilt-3d:hover .tilt-3d-shine { opacity: 0 !important; }
+  .depth-near,
+  .depth-mid,
+  .depth-back,
+  .depth-far { transform: none !important; }
+  .product-3d-inner,
+  .product-3d:hover .product-3d-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+  .animate-ticker,
+  .animate-float,
+  .animate-float-tilt,
+  .animate-blink,
+  .animate-pop,
+  .animate-spin-slow { animation: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ============================================================
+   Pointer affordance — every interactive surface gets a hand.
+   Wrapped in @layer base so Tailwind v4 emits it cleanly; utilities
+   like cursor-default can still override per-element when needed.
+   ============================================================ */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  label[for],
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="range"]:not(:disabled),
+  input[type="file"]:not(:disabled),
+  select:not(:disabled),
+  a[href] {
+    cursor: pointer;
+  }
+  button:disabled,
+  [role="button"][aria-disabled="true"],
+  input:disabled,
+  select:disabled {
+    cursor: not-allowed;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Keep pointer affordance outside Tailwind layers too, so interactive
+   controls still read as clickable when component utility order changes. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+summary,
+label:has(input:not(:disabled)),
+label[for],
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+input[type="range"]:not(:disabled),
+input[type="file"]:not(:disabled),
+select:not(:disabled),
+a[href] {
+  cursor: pointer !important;
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"],
+input:disabled,
+select:disabled {
+  cursor: not-allowed !important;
+}
+
+/* ============================================================
+   Reveal-on-scroll
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   Legal body
+   ============================================================ */
+
+.legal-body a {
+  color: var(--cobalt);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal-body a:hover {
+  color: var(--cobalt-deep);
+}
+.legal-body ul,
+.legal-body ol {
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.legal-body code {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.92em;
+  background: var(--cobalt-soft);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--cobalt);
+}
+
+/* Print */
+@media print {
+  body { background: white; color: black; }
 }
